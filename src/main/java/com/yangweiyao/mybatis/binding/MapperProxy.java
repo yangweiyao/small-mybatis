@@ -1,9 +1,10 @@
 package com.yangweiyao.mybatis.binding;
 
+import com.yangweiyao.mybatis.session.SqlSession;
+
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.Map;
 
 /**
  * @author YangWeiYao
@@ -14,11 +15,11 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
 
     private static final long serialVersionUID = -6395296665913272548L;
 
-    private final Map<String, String> sqlSession;
+    private final SqlSession sqlSession;
 
     private final Class<T> mapperInterface;
 
-    public MapperProxy(Map<String, String> sqlSession, Class<T> mapperInterface) {
+    public MapperProxy(SqlSession sqlSession, Class<T> mapperInterface) {
         this.sqlSession = sqlSession;
         this.mapperInterface = mapperInterface;
     }
@@ -29,12 +30,11 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
             // 如果是 Object 提供的 toString、hashCode 等方法是不需要代理执行的
             return method.invoke(this, args);
         } else {
-            // sqlSession 的 Map 对象以接口名称+方法名称作为key
-            return "代理对象：" + sqlSession.get(mapperInterface.getName() + "." + method.getName());
+            return sqlSession.selectOne(method.getName(), args);
         }
     }
 
-    public Map<String, String> getSqlSession() {
+    public SqlSession getSqlSession() {
         return sqlSession;
     }
 
