@@ -1,6 +1,7 @@
 package com.yangweiyao.mybatis.binding;
 
 import cn.hutool.core.lang.ClassScanner;
+import com.yangweiyao.mybatis.session.Configuration;
 import com.yangweiyao.mybatis.session.SqlSession;
 
 import java.util.HashMap;
@@ -14,7 +15,13 @@ import java.util.Set;
  */
 public class MapperRegistry {
 
+
+    private final Configuration configuration;
     private final Map<Class<?>, MapperProxyFactory<?>> knownMappers = new HashMap<>();
+
+    public MapperRegistry(Configuration configuration) {
+        this.configuration = configuration;
+    }
 
     @SuppressWarnings("unchecked")
     public <T> T getMapper(Class<T> type, SqlSession sqlSession) {

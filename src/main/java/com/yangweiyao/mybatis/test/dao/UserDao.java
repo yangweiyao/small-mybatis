@@ -1,5 +1,7 @@
 package com.yangweiyao.mybatis.test.dao;
 
+import com.yangweiyao.mybatis.test.po.UserInfo;
+
 /**
  * @author YangWeiYao
  * @Description
@@ -7,6 +9,6 @@ package com.yangweiyao.mybatis.test.dao;
  */
 public interface UserDao {
 
-    String queryUserName(Long userId);
+    String queryUserInfoById(Long userId);
 
 }
