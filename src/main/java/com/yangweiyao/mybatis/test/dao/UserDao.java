@@ -9,6 +9,6 @@ import com.yangweiyao.mybatis.test.po.UserInfo;
  */
 public interface UserDao {
 
-    String queryUserInfoById(Long userId);
+    UserInfo queryUserInfoById(Long userId);
 
 }

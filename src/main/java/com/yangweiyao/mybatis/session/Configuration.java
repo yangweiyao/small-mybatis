@@ -1,7 +1,11 @@
 package com.yangweiyao.mybatis.session;
 
 import com.yangweiyao.mybatis.binding.MapperRegistry;
+import com.yangweiyao.mybatis.datasource.druid.DruidDataSourceFactory;
+import com.yangweiyao.mybatis.mapping.Environment;
 import com.yangweiyao.mybatis.mapping.MappedStatement;
+import com.yangweiyao.mybatis.transaction.jdbc.JdbcTransactionFactory;
+import com.yangweiyao.mybatis.type.TypeAliasRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +18,11 @@ import java.util.Map;
 public class Configuration {
 
     /**
+     * 环境
+     */
+    protected Environment environment;
+
+    /**
      * 映射注册机
      */
     protected MapperRegistry mapperRegistry = new MapperRegistry(this);
@@ -22,6 +31,29 @@ public class Configuration {
      * 映射的语句，存在Map里
      */
     protected final Map<String, MappedStatement> mappedStatements = new HashMap<>();
+
+    /**
+     * 类型别名注册机
+     */
+    protected final TypeAliasRegistry typeAliasRegistry = new TypeAliasRegistry();
+
+
+    public Configuration() {
+        typeAliasRegistry.registerAlias("JDBC", JdbcTransactionFactory.class);
+        typeAliasRegistry.registerAlias("DRUID", DruidDataSourceFactory.class);
+    }
+
+    public Environment getEnvironment() {
+        return environment;
+    }
+
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
+
+    public TypeAliasRegistry getTypeAliasRegistry() {
+        return typeAliasRegistry;
+    }
 
     public void addMappers(String packageName) {
         mapperRegistry.addMappers(packageName);
